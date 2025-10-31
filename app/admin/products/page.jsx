@@ -68,7 +68,6 @@ export default function AdminProducts() {
     await APICall.delete("/products/" + id);
     setProducts((p) => p.filter((x) => x.id !== id));
   }
-  console.log("first", form);
   return (
     <div>
       <main className="p-6 max-w-4xl mx-auto">
@@ -159,7 +158,7 @@ export default function AdminProducts() {
           />
           <div className="flex gap-2 justify-end">
             <button
-              onClick={() => setEditing(null)}
+              onClick={openCreate}
               className="px-3 py-1 border rounded"
             >
               Clear

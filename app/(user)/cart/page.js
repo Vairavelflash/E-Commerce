@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { CartDisplay } from "./CartDisplay";
 
 export default function CartPage() {
-  const { cart, cartId } = useStore();
+  const { cart, cartId, setTrigger, trigger } = useStore();
   const [cartData, setCartData] = useState(null);
 
   async function fetchCart() {
@@ -16,14 +16,15 @@ export default function CartPage() {
         setCartData(res?.data);
       }
     } catch (err) {
-      console.error(err);
-    }
+      console.log(err);
+      // setCartData([])
+    } 
   }
 
   useEffect(() => {
     fetchCart();
-  }, [cartId]);
-  console.log("cart", cart, cartId);
+  }, [cartId,trigger]);
+ 
   return (
     <div>
       <main className="max-w-2xl mx-auto p-6">

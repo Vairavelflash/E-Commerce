@@ -118,17 +118,20 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     const auth = req.headers.get("Authorization");
-    if (!auth)
+    if (!auth) {
       return NextResponse.json(
         { error: "Authorization required" },
         { status: 401 }
       );
+    }
+
     const token = auth.split(" ")[1];
     const decoded = verifyToken(token);
 
-    if (!decoded)
+    if (!decoded) {
       return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
-
+    }
+console.log('001')
     if (isAdmin(decoded)) {
       // list all orders
       const res = await pool.query(
@@ -138,13 +141,17 @@ export async function GET(req) {
     } else {
       // list user;s orders
       const res = await pool.query(
-        "SELECT * FROM order WHERE user_id= $1 ORDER BY created_at DESC",
+        "SELECT * FROM orders WHERE user_id= $1 ORDER BY created_at DESC",
         [decoded?.id]
       );
+      console.log("first", decoded?.id, res.rows);
       return NextResponse.json({ orders: res.rows });
     }
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch orders" },
+      { status: 500 }
+    );
   }
 }

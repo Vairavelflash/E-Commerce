@@ -7,11 +7,13 @@ export const useStore = create(
     (set, get) => ({
       user: null,
       token: null,
-      cart: [],
       cartId: null,
+      trigger: new Date(),
       setUser: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null, cart: [], cartId: null }),
+      logout: () => set({ user: null, token: null,  cartId: null }),
       setCartId: (cartId) => set({ cartId }),
+
+      setTrigger:(date) => set({trigger:date}),
 
       // Helper to attack token to axios globally
       setupAxios: () => {

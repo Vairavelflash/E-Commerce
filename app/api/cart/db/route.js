@@ -35,19 +35,20 @@ export async function GET(req) {
   const user = getUserFromReq(req);
 
   if (!user) return NextResponse.json({ error: "No Token" }, { status: 400 });
-try{
-  const res = await pool.query('SELECT * FROM carts WHERE user_id = $1',[user?.id])
-
-  if (!res.rows.length)
-    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
-  return NextResponse.json({ cart: res.rows[0] });
-  } catch(err){
-     console.error(err);
+  try {
+    const res = await pool.query("SELECT * FROM carts WHERE user_id = $1", [
+      user?.id,
+    ]);
+ 
+    if (res.rows?.length == 0) {
+      return NextResponse.json({ error: "Cart not found" });
+    }
+    return NextResponse.json({ cart: res.rows[0] });
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
       { error: "Error getting cart details" },
       { status: 400 }
     );
   }
 }
-
-

@@ -1,10 +1,20 @@
 import { APICall } from "@/lib/api";
-import { useState } from "react";
+import { useStore } from "@/store/useStore";
+import { useEffect, useState } from "react";
 
 export const CartDisplay = ({ cartData }) => {
   const { cart, items, total } = cartData;
+  const { setTrigger } = useStore();
 
-  const [cartItems, setCartItems] = useState(items);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    setCartItems(items || []);
+
+    return () => {
+      setCartItems([]);
+    };
+  }, [items]);
 
   const updateQuantity = (itemId, newQuantity) => {
     const updatedItems = cartItems.map((item) =>
@@ -16,7 +26,9 @@ export const CartDisplay = ({ cartData }) => {
   };
 
   const removeItem = (itemId) => {
-    setCartItems((prev) => prev.filter((item) => item.item_id !== itemId));
+    APICall.delete(`/cart/db/${cart?.id}`)
+      .then((res) => setTrigger(new Date()))
+      .catch((err) => console.error(err));
   };
 
   const calculateTotal = () => {
@@ -26,23 +38,22 @@ export const CartDisplay = ({ cartData }) => {
   async function checkout() {
     try {
       const res = await APICall.post("/orders", { cart_id: cart?.id });
-    //   alert(JSON.stringify(res?.data));
+      //   alert(JSON.stringify(res?.data));
     } catch (err) {
       console.error("Checkout Error", err);
     }
   }
 
-  console.log("first", cart);
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-xl rounded-2xl">
       {/* Header */}
       <div className="mb-8">
-        <p className="text-gray-600">{cartItems.length} items in your cart</p>
+        <p className="text-gray-600">{cartItems?.length} items in your cart</p>
       </div>
 
       {/* Cart Items */}
       <div className="space-y-6 mb-10">
-        {cartItems.map((item) => (
+        {cartItems?.map((item) => (
           <div
             key={item.item_id}
             className="flex items-center gap-6 p-6 border border-gray-200 rounded-xl hover:shadow-md transition-all duration-200"
@@ -133,7 +144,7 @@ export const CartDisplay = ({ cartData }) => {
       </div>
 
       {/* Empty Cart State */}
-      {cartItems.length === 0 && (
+      {cartItems?.length === 0 && (
         <div className="text-center py-20">
           <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-2xl flex items-center justify-center">
             <svg
@@ -154,12 +165,11 @@ export const CartDisplay = ({ cartData }) => {
             Your cart is empty
           </h3>
           <p className="text-gray-600 mb-8">Add some items to get started!</p>
-      
         </div>
       )}
 
       {/* Order Summary - Only show if cart has items */}
-      {cartItems.length > 0 && (
+      {cartItems?.length > 0 && (
         <div className="bg-linear-to-r from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Order Summary

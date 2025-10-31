@@ -43,6 +43,8 @@ export default function ProductPage() {
     } catch (err) {
       console.error(err);
       // store.updateCartItem(id, 0);
+    } finally {
+      store.setTrigger(new Date());
     }
   }
 

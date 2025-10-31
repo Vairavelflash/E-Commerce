@@ -5,7 +5,7 @@ import { fetchOrderDetails } from "@/lib/order";
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } =await params;
     const auth = req.headers.get("authorization");
     if (!auth) return NextResponse.json({ error: "Authorization required" }, { status: 401 });
     const token = auth.split(" ")[1];
@@ -30,8 +30,8 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   // Admin only: update order status (e.g., pending -> shipped -> delivered -> cancelled)
   try {
-    const { id } = params;
-    const auth = req.headers.get("authorization");
+    const { id } =await params;
+    const auth = req.headers.get("Authorization");
     if (!auth) return NextResponse.json({ error: "Authorization required" }, { status: 401 });
     const token = auth.split(" ")[1];
     const decoded = verifyToken(token);
@@ -54,7 +54,7 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
   // Allow user to cancel order only if it's still 'pending' (simple rule)
   try {
-    const { id } = params;
+    const { id } =await params;
     const auth = req.headers.get("authorization");
     if (!auth) return NextResponse.json({ error: "Authorization required" }, { status: 401 });
     const token = auth.split(" ")[1];

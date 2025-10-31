@@ -23,8 +23,14 @@ export default function LoginPage() {
       const res = await api.post("/auth/login", form.values);
       const { user, token } = res.data;
       setUser(user, token);
-      setupAxios()
-      router.push("/product");
+      setupAxios();
+      if(user?.role == "admin"){
+        router.push("/admin");
+
+      }else{
+
+        router.push("/product");
+      }
     } catch (err) {
       // alert("Login failed");
       setError('Invalid credentials')

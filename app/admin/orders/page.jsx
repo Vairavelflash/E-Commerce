@@ -1,22 +1,23 @@
 "use client";
 import Header from "@/components/Header";
 import { api, APICall } from "@/lib/api";
+import { useStore } from "@/store/useStore";
 import { useEffect, useState } from "react";
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
+  const { setTrigger, trigger } = useStore();
   useEffect(() => {
-    APICall
-      .get("/orders")
+    APICall.get("/orders")
       .then((r) => setOrders(r.data.orders || []))
       .catch(console.error);
-  }, []);
+  }, [trigger]);
 
   async function updateStatus(id, status) {
-    await api.put("/orders/" + id, { status });
-    setOrders((o) => o.map((x) => (x.id === id ? { ...x, status } : x)));
+    APICall.put("/orders/" + id, { status })
+      .then((res) => setTrigger(new Date()))
+      .catch((err) => console.error(err));
   }
-
   return (
     <div>
       <main className="p-6 max-w-4xl mx-auto">

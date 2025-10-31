@@ -1,13 +1,13 @@
 "use client";
 import Header from "@/components/Header";
-import { api } from "@/lib/api";
+import { api, APICall } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    api
+    APICall
       .get("/orders")
       .then((r) => setOrders(r.data.orders || []))
       .catch(console.error);
