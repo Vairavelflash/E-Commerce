@@ -18,7 +18,6 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const user = getUserFromReq(req); // may be null
-
     let body = {};
     try {
       body = await req.json();
@@ -131,7 +130,7 @@ export async function GET(req) {
     if (!decoded) {
       return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
     }
-console.log('001')
+
     if (isAdmin(decoded)) {
       // list all orders
       const res = await pool.query(
@@ -144,7 +143,6 @@ console.log('001')
         "SELECT * FROM orders WHERE user_id= $1 ORDER BY created_at DESC",
         [decoded?.id]
       );
-      console.log("first", decoded?.id, res.rows);
       return NextResponse.json({ orders: res.rows });
     }
   } catch (err) {

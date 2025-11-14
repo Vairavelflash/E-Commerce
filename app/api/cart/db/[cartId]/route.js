@@ -42,6 +42,8 @@ export async function GET(req, { params }) {
   return NextResponse.json({ cart: cartRes.rows[0], items, total });
 }
 
+
+// Bug in Delete
 export async function DELETE(req, { params }) {
   const { cartId } =await params;
   await pool.query("DELETE FROM cart_items WHERE cart_id=$1", [cartId]);

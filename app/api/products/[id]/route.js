@@ -27,8 +27,7 @@ export async function PUT(req, { params }) {
 
   try {
     const { id } =await params;
-    const { name, description, price, stock, category_id, image_url } =
-      await req.json();
+    const { name, description, price, stock, category_id, image_url } = await req.json();
 
     const result = await pool.query(
       `UPDATE products

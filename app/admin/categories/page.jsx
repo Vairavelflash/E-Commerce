@@ -54,14 +54,16 @@ export default function AdminCategories() {
 
   return (
     <div>
-      <main className="p-6 max-w-4xl mx-auto">
+      <main className="p-6 max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl">Category</h2>
           <button onClick={openCreate} className="px-3 py-1 border rounded">
             Create
           </button>
         </div>
-        <div className="space-y-2">
+        <div className="flex items-baseline justify-between gap-5 w-full">
+
+        <div className="flex-2 space-y-2">
           {category.map((p) => (
             <div
               key={p.id}
@@ -86,7 +88,7 @@ export default function AdminCategories() {
           ))}
         </div>
 
-        <div className="mt-6 border p-4 rounded">
+        <div className="flex-1 mt-6 border p-4 rounded">
           <h3 className="font-bold mb-2">
             {editing ? "Edit" : "Create"} Category
           </h3>
@@ -119,6 +121,7 @@ export default function AdminCategories() {
               Save
             </button>
           </div>
+        </div>
         </div>
       </main>
     </div>

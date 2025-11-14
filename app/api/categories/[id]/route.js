@@ -17,9 +17,9 @@ export async function PUT(req, { params }) {
 
   const token = auth.split(" ")[1];
   const decoded = verifyToken(token);
-
-  if (!isAdmin(decoded))
+  if (!isAdmin(decoded)){
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
 
   try {
     const { id } = await params;
