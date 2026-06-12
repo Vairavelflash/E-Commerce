@@ -1,0 +1,21 @@
+"use client";
+
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import api from "@/lib/api";
+
+export default function useLogout() {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: async () => {
+      const response = await api.post("/auth/logout");
+      return response.data;
+    },
+
+    onSuccess: () => {
+      router.push("/login");
+      router.refresh();
+    },
+  });
+}

@@ -1,10 +1,11 @@
-import Header from "@/components/Header";
+import Navbar from "@/components/layout/Navbar";
 import React from "react";
 
 function layout({ children }) {
   return (
     <div>
-      <Header role={"user"} />
+      <Navbar />
+
       {children}
     </div>
   );

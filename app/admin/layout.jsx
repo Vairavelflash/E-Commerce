@@ -1,13 +1,11 @@
-import Header from "@/components/Header";
-import React from "react";
+import Navbar from '@/components/layout/Navbar'
+import React from 'react'
 
 function layout({ children }) {
   return (
     <div>
-      <Header role={"admin"} />
-      {children}
-    </div>
-  );
+        <Navbar />{children}</div>
+  )
 }
 
-export default layout;
+export default layout

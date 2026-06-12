@@ -1,183 +1,103 @@
 "use client";
-import Header from "@/components/Header";
-import { api, APICall } from "@/lib/api";
-import { useEffect, useState } from "react";
 
-export default function AdminProducts() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    image_url: "",
-    description: "",
-    category_id: "",
+import { useState } from "react";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import ProductSearch from "@/components/products/ProductSearch";
+import ProductTable from "@/components/products/ProductTable";
+import ProductModal from "@/components/products/ProductModal";
+import DeleteProductModal from "@/components/products/DeleteProductModal";
+
+import { Button } from "@/components/ui/button";
+
+import { useProducts } from "@/hooks/useProducts";
+
+import { deleteProduct } from "@/services/product.service";
+
+export default function ProductsPage() {
+  const queryClient = useQueryClient();
+
+  const [searchText, setSearchText] = useState("");
+
+  const [search, setSearch] = useState("");
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [createOpen, setCreateOpen] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false);
+
+  const [viewOpen, setViewOpen] = useState(false);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const { data, isLoading } = useProducts(search);
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteProduct,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+
+      setDeleteOpen(false);
+    },
   });
 
-  useEffect(() => {
-    APICall.get("/products")
-      .then((r) => setProducts(r.data))
-      .catch(console.error);
-
-    APICall.get("/categories")
-      .then((r) => setCategories(r.data))
-      .catch(console.error);
-  }, []);
-
-  function openCreate() {
-    setEditing(null);
-    setForm({
-      name: "",
-      price: "",
-      stock: "",
-      image_url: "",
-      description: "",
-      category_id: "",
-    });
-  }
-  function openEdit(p) {
-    setEditing(p);
-    setForm({
-      name: p.name,
-      price: p.price,
-      stock: p.stock,
-      image_url: p.image_url,
-      description: p.description,
-      category_id: p.category_id,
-    });
-  }
-
-  async function save() {
-    try {
-      if (editing) await APICall.put("/products/" + editing.id, form);
-      else await APICall.post("/products", form);
-      const r = await api.get("/products");
-      setProducts(r.data);
-      setEditing(null);
-    } catch (e) {
-      alert("Save failed");
-    } finally {
-      openCreate();
-    }
-  }
-
-  async function remove(id) {
-    if (!confirm("Delete?")) return;
-    await APICall.delete("/products/" + id);
-    setProducts((p) => p.filter((x) => x.id !== id));
+  if (isLoading) {
+    return <div className="p-6">Loading...</div>;
   }
   return (
-    <div>
-      <main className="p-6 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl">Products</h2>
-          <button onClick={openCreate} className="px-3 py-1 border rounded">
-            Create
-          </button>
-        </div>
-        <div className="flex items-baseline justify-between gap-5 w-full">
-          <div className="flex-2 space-y-2 ">
-            {products.map((p) => (
-              <div
-                key={p.id}
-                className="flex items-center justify-between border p-2 rounded"
-              >
-                <div>{p.name}</div>
-                <div>
-                  {categories.filter((i) => p?.category_id == i?.id)[0]?.name}
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => openEdit(p)}
-                    className="px-2 py-1 border rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => remove(p.id)}
-                    className="px-2 py-1 border rounded"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between">
+        <ProductSearch
+          searchText={searchText}
+          setSearchText={setSearchText}
+          onSearch={() => setSearch(searchText)}
+        />
 
-          <div className="flex-1 mt-6 border p-4 rounded">
-            <h3 className="font-bold mb-2">
-              {editing ? "Edit" : "Create"} Product
-            </h3>
-            <input
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="Name"
-              className="border p-2 mb-2 w-full rounded"
-            />
-            <input
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              placeholder="Price"
-              className="border p-2 mb-2 w-full rounded"
-            />
-            <input
-              value={form.stock}
-              onChange={(e) => setForm({ ...form, stock: e.target.value })}
-              placeholder="Stock"
-              className="border p-2 mb-2 w-full rounded"
-            />
-            <input
-              value={form.image_url}
-              onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-              placeholder="Image URL"
-              className="border p-2 mb-2 w-full rounded"
-            />
-            <select
-              value={
-                categories?.filter((item) => item?.id == form?.category_id)[0]
-                  ?.id || ""
-              }
-              className="border p-2 mb-2 w-full rounded"
-              placeholder="Select Category"
-              onChange={(e) =>
-                setForm({ ...form, category_id: e.target.value })
-              }
-            >
-              <option value="" disabled>
-                Select Category
-              </option>
-              {categories.length > 0 &&
-                categories.map((item) => (
-                  <option key={item?.id} value={item?.id}>
-                    {item?.name}
-                  </option>
-                ))}
-            </select>
+        <Button onClick={() => setCreateOpen(true)}>Add Product</Button>
+      </div>
 
-            <textarea
-              value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
-              placeholder="Description"
-              className="border p-2 mb-2 w-full rounded"
-            />
-            <div className="flex gap-2 justify-end">
-              <button onClick={openCreate} className="px-3 py-1 border rounded">
-                Clear
-              </button>
-              <button
-                onClick={save}
-                className="px-3 py-1 bg-black text-white rounded"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
+      <ProductTable
+        products={data || []}
+        onView={(product) => {
+          setSelectedProduct(product);
+          setViewOpen(true);
+        }}
+        onEdit={(product) => {
+          setSelectedProduct(product);
+          setEditOpen(true);
+        }}
+        onDelete={(product) => {
+          setSelectedProduct(product);
+          setDeleteOpen(true);
+        }}
+      />
+
+      <ProductModal open={createOpen} setOpen={setCreateOpen} mode="create" />
+
+      <ProductModal
+        open={editOpen}
+        setOpen={setEditOpen}
+        mode="edit"
+        product={selectedProduct}
+      />
+
+      <ProductModal
+        open={viewOpen}
+        setOpen={setViewOpen}
+        mode="view"
+        product={selectedProduct}
+      />
+
+      <DeleteProductModal
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+        onDelete={() => deleteMutation.mutate(selectedProduct.id)}
+      />
     </div>
   );
 }

@@ -34,7 +34,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="mb-4 flex gap-2">
+      <div className="mb-4 flex flex-1 gap-2">
         <input
           value={q}
           onChange={handleSearch}
