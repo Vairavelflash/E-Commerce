@@ -28,7 +28,7 @@ export default function ProductTable({ products, onView, onEdit, onDelete }) {
         </thead>
 
         <tbody>
-          {products?.map((product) => (
+          {products?.length > 0 && products?.map((product) => (
             <tr key={product.id} className="border-b text-center">
               <td>{product.id}</td>
 
