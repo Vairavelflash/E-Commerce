@@ -10,6 +10,8 @@ export default function useLogout() {
   return useMutation({
     mutationFn: async () => {
       const response = await api.post("/auth/logout");
+      localStorage.removeItem("username")
+      localStorage.removeItem(userId)
       return response.data;
     },
 
@@ -17,5 +19,9 @@ export default function useLogout() {
       router.push("/login");
       router.refresh();
     },
+    onError:() =>{
+      router.push("/login");
+      router.refresh();
+    }
   });
 }
