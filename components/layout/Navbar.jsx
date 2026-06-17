@@ -14,15 +14,24 @@ import { Button } from "@/components/ui/button";
 import useLogout from "@/hooks/useLogout";
 import { useEffect, useState } from "react";
 
+
 export default function Navbar() {
   const logoutMutation = useLogout();
-  const [user, setUser] = useState("Guest User");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    role: "",
+  });
 
   useEffect(() => {
     let username =
       (typeof window !== "undefined" && localStorage.getItem("username")) ||
       "Guest User";
-    setUser(username);
+    let userRole =
+      (typeof window !== "undefined" && localStorage.getItem("role")) || "USER";
+    setUserInfo({
+      name: username,
+      role: userRole,
+    });
   }, []);
   return (
     <header className="border-b bg-white">
@@ -32,23 +41,30 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Link href="categories" className="text-sm font-medium">
-            Categories
-          </Link>
+          {userInfo?.role === "ADMIN" && (
+            <Link href="categories" className="text-sm font-medium">
+              Categories
+            </Link>
+          )}
           <Link href="products" className="text-sm font-medium">
             Products
           </Link>
-          <Link href="/admin/cart" className="text-sm font-medium">
+          <Link href="cart" className="text-sm font-medium">
             Cart
           </Link>
 
-          <Link href="/admin/orders" className="text-sm font-medium">
+          <Link href="orders" className="text-sm font-medium">
             Orders
           </Link>
+          {userInfo?.role === "ADMIN" && (
+            <Link href="aichat" className="text-sm font-medium">
+              AI
+            </Link>
+          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">{user}</Button>
+              <Button variant="outline">{userInfo?.name}</Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">

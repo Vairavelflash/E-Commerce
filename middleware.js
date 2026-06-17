@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/admin/dashboard"];
 const authRoutes = ["/login", "/signup"];
 
 export function middleware(request) {
@@ -22,9 +22,13 @@ export function middleware(request) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
+  if (isAuthRoute && token && role =="ADMIN") {
+    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/signup"],
+  matcher: ["/admin/dashboard/:path*", "/login", "/signup"],
 };

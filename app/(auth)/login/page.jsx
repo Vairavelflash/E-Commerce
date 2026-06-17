@@ -23,13 +23,14 @@ export default function LoginPage() {
       const userInfo = response.data.user;
       localStorage.setItem("username",userInfo.name)
       localStorage.setItem("userId",userInfo.id)
+      localStorage.setItem("role",userInfo.role)
       // return response.data;
     },
     onSuccess: async () => {
       const authMe = await api.get("/auth/me");
 
       if (authMe.data?.data.role === "ADMIN") {
-        router.push("/admin");
+        router.push("/admin/dashboard");
       } else {
         router.push("/dashboard");
       }
