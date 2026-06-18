@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/services/product.service";
+import { getProduct, getProducts } from "@/services/product.service";
 
 export const useProducts = (search) => {
   return useQuery({
@@ -7,3 +7,11 @@ export const useProducts = (search) => {
     queryFn: () => getProducts(search),
   });
 };
+
+export const useGetProduct = (id) =>{
+  return useQuery({
+    queryKey:["productsById"],
+    queryFn:() =>getProduct(id),
+    enabled: !!id
+  })
+}

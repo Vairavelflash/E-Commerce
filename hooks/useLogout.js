@@ -11,7 +11,8 @@ export default function useLogout() {
     mutationFn: async () => {
       const response = await api.post("/auth/logout");
       localStorage.removeItem("username")
-      localStorage.removeItem(userId)
+      localStorage.removeItem("userId")
+      localStorage.removeItem("role")
       return response.data;
     },
 
