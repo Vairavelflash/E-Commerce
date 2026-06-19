@@ -53,7 +53,7 @@ export default function Navbar() {
             Cart
           </Link>
 
-          <Link href="order" className="text-sm font-medium">
+          <Link href="orders" className="text-sm font-medium">
             Orders
           </Link>
           {userInfo?.role === "ADMIN" && (

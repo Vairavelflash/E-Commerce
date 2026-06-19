@@ -6,3 +6,9 @@ export const checkoutCart = async() =>{
 
     return res?.data
 }
+
+export const getOrders = async() =>{
+    const res = await api.get("/orders");
+
+    return res.data;
+}
