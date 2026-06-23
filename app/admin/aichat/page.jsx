@@ -43,7 +43,7 @@ export default function ChatPage() {
             userId:localStorage.getItem("userId"),
             role:localStorage.getItem("role")
         }
-      const response = await fetch("http://localhost:5000/api/v1/ai/chat", {
+      const response = await fetch("http://localhost:5000/api/v1/ai/query", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,8 +100,8 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-screen flex flex-col">
-      <div className="flex-1 mx-auto max-w-3xl space-y-6">
+    <div className="max-w-4xl mx-auto flex-1 flex flex-col">
+      <div className=" basis-4/5 mx-auto max-w-3xl space-y-6">
         {messages.map((message,index) => (
           <div
             key={index}
@@ -122,7 +122,7 @@ export default function ChatPage() {
         ))}
       </div>
 
-      <div className="border-t p-4 flex gap-2">
+      <div className="basis-1/5 border-t p-4 flex gap-2">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}

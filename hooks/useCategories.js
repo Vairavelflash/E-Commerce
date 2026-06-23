@@ -4,9 +4,11 @@ import { getCategories, getCategoriesList } from "@/services/category.service";
 
 
 
-export const useCategories = () => {
+export const useCategories = (page,limit,search) => {
   return useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
+    queryKey: ["categories",page,limit,search],
+    queryFn: () =>getCategories({page,limit,search}),
+
+    placeholderData:(previousData) => previousData,
   });
 };

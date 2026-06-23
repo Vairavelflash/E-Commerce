@@ -14,13 +14,18 @@ import { Button } from "@/components/ui/button";
 import { useProducts } from "@/hooks/useProducts";
 
 import { deleteProduct } from "@/services/product.service";
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 export default function ProductsPage() {
   const queryClient = useQueryClient();
 
-  const [searchText, setSearchText] = useState("");
+ const [page,setPage] = useState(1);
+ const [search,setSearch] = useState("");
+ const [limit,setLimit] = useState(10)
+ 
+   const { data, isLoading } = useProducts(page,limit,search);
 
-  const [search, setSearch] = useState("");
+
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -32,7 +37,6 @@ export default function ProductsPage() {
 
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const { data, isLoading } = useProducts(search);
 
   const deleteMutation = useMutation({
     mutationFn: deleteProduct,
@@ -52,17 +56,17 @@ export default function ProductsPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between">
-        <ProductSearch
+        {/* <ProductSearch
           searchText={searchText}
           setSearchText={setSearchText}
           onSearch={() => setSearch(searchText)}
-        />
+        /> */}
 
         <Button onClick={() => setCreateOpen(true)}>Add Product</Button>
       </div>
 
       <ProductTable
-        products={data || []}
+        products={data?.products || []}
         onView={(product) => {
           setSelectedProduct(product);
           setViewOpen(true);
@@ -76,6 +80,40 @@ export default function ProductsPage() {
           setDeleteOpen(true);
         }}
       />
+
+        <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+
+                if (page > 1) {
+                  setPage(page - 1);
+                }
+              }}
+            />
+          </PaginationItem>
+
+          <PaginationItem>
+            Page {data?.pagination.page} of {data?.pagination.totalPages}
+          </PaginationItem>
+
+          <PaginationItem>
+            <PaginationNext
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+
+                if (page < data?.pagination.totalPages) {
+                  setPage(page + 1);
+                }
+              }}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
 
       <ProductModal open={createOpen} setOpen={setCreateOpen} mode="create" />
 

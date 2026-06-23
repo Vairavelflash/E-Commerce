@@ -1,7 +1,13 @@
 import api from "@/lib/api";
 
-export const getCategories = async () => {
-  const res = await api.get("/categories");
+export const getCategories = async ({page,limit,search}) => {
+  const res = await api.get("/categories",{
+    params:{
+      page,
+      limit,
+      search
+    }
+  });
 
   return res.data;
 };

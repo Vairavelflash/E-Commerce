@@ -7,8 +7,13 @@ import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -17,7 +22,11 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue
   } = useForm();
+
+  const selectedRole = watch("role");
 
   const signupMutation = useMutation({
     mutationFn: async (data) => {
@@ -41,15 +50,10 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
-              placeholder="First Name"
-              {...register("firstName", {
+              placeholder="Name"
+              {...register("name", {
                 required: "First name is required",
               })}
-            />
-
-            <Input
-              placeholder="Last Name"
-              {...register("lastName")}
             />
 
             <Input
@@ -64,9 +68,27 @@ export default function SignupPage() {
               placeholder="Password"
               {...register("password", {
                 required: "Password is required",
-                minLength: 6,
+                minLength: 2,
               })}
             />
+
+            <Select
+              className="w-full "
+              value={selectedRole || ""}
+  onValueChange={(value) => setValue("role", value, { shouldValidate: true })}
+            >
+              <SelectTrigger className={"w-full"}>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {["ADMIN", "USER"]?.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <Button
               type="submit"
