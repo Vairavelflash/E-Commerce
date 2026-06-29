@@ -21,8 +21,8 @@ export default function UserProductsPage() {
       {isLoading ? <div>Searching...</div> : null}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data?.length > 0 &&
-          data?.map((p) => <ProductCard key={p.id} product={p} />)}
+        {data?.products.length > 0 &&
+          data?.products.map((p) => <ProductCard key={p.id} product={p} />)}
       </div>
     </div>
   );

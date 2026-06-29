@@ -61,6 +61,7 @@ export default function ProductsPage() {
           setSearchText={setSearchText}
           onSearch={() => setSearch(searchText)}
         /> */}
+        <h1 className="text-2xl font-bold">Products</h1>
 
         <Button onClick={() => setCreateOpen(true)}>Add Product</Button>
       </div>
