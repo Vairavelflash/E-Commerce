@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createProduct, updateProduct } from "@/services/product.service";
 
-import { useCategories } from "@/hooks/useCategories";
+import { useCategories, useCategoriesList } from "@/hooks/useCategories";
 
 import {
   Dialog,
@@ -35,7 +35,7 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024;
 export default function ProductModal({ open, setOpen, mode, product }) {
   const queryClient = useQueryClient();
   const [imageKey, setImageKey] = useState("");
-  const { data: categories } = useCategories();
+  const { data: categories } = useCategoriesList();
 
   const { register, handleSubmit, setValue, watch, reset } = useForm();
 

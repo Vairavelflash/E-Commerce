@@ -12,3 +12,10 @@ export const useCategories = (page,limit,search) => {
     placeholderData:(previousData) => previousData,
   });
 };
+
+export const useCategoriesList = () =>{
+  return useQuery({
+    queryKey:["categories"],
+    queryFn:getCategoriesList
+  })
+}
