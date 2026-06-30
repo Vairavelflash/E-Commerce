@@ -123,6 +123,7 @@ export default function ProductsPage() {
         setOpen={setEditOpen}
         mode="edit"
         product={selectedProduct}
+        setSelectedProduct={setSelectedProduct}
       />
 
       <ProductModal
@@ -130,6 +131,8 @@ export default function ProductsPage() {
         setOpen={setViewOpen}
         mode="view"
         product={selectedProduct}
+        setSelectedProduct={setSelectedProduct}
+
       />
 
       <DeleteProductModal

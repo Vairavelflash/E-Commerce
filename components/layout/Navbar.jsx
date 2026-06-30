@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import useLogout from "@/hooks/useLogout";
 import { useEffect, useState } from "react";
 
-
 export default function Navbar() {
   const logoutMutation = useLogout();
   const [userInfo, setUserInfo] = useState({
@@ -59,6 +58,11 @@ export default function Navbar() {
           {userInfo?.role === "ADMIN" && (
             <Link href="aichat" className="text-sm font-medium">
               AI
+            </Link>
+          )}
+          {userInfo?.role === "ADMIN" && (
+            <Link href="aiagent" className="text-sm font-medium">
+              AI Agent
             </Link>
           )}
 

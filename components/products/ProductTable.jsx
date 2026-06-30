@@ -34,8 +34,8 @@ export default function ProductTable({ products, onView, onEdit, onDelete }) {
 
               <td>
                 <img
-                  src={product.imageUrl}
-                  alt={product.name}
+                  src={product?.imageUrl || "https://placehold.co/600x400?text=No_Image"}
+                  alt={product?.name}
                   className="h-12 w-12 object-cover mx-auto"
                 />
               </td>

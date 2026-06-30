@@ -32,7 +32,13 @@ import axios from "axios";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 
-export default function ProductModal({ open, setOpen, mode, product }) {
+export default function ProductModal({
+  open,
+  setOpen,
+  mode,
+  product,
+  setSelectedProduct,
+}) {
   const queryClient = useQueryClient();
   const [imageKey, setImageKey] = useState("");
   const { data: categories } = useCategoriesList();
@@ -52,6 +58,8 @@ export default function ProductModal({ open, setOpen, mode, product }) {
         categoryId: "",
       });
     }
+
+
   }, [product, reset]);
 
   const createMutation = useMutation({
@@ -61,7 +69,7 @@ export default function ProductModal({ open, setOpen, mode, product }) {
       queryClient.invalidateQueries({
         queryKey: ["products"],
       });
-
+      setSelectedProduct(null);
       setOpen(false);
     },
   });
@@ -91,7 +99,7 @@ export default function ProductModal({ open, setOpen, mode, product }) {
       delete data.isDeleted;
       delete data.updated_at;
       delete data.category_name;
-      
+
       updateMutation.mutate({
         id: product.id,
         data,
