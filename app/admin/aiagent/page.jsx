@@ -1,5 +1,6 @@
 "use client";
 
+import MessageItem from "@/components/chat/MessageItem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
@@ -74,29 +75,14 @@ function page() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto flex-1 flex flex-col">
-      <div className=" basis-4/5  w-full mx-5 space-y-6">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              message.role === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                message.role === "user"
-                  ? "bg-black text-white"
-                  : "bg-gray-100 text-black"
-              }`}
-            >
-              {message.content}
-            </div>
-          </div>
+    <div className="max-w-3xl mx-auto h-[80vh] flex flex-col">
+      <div className="flex-1 basis-4/5  w-full mx-5 space-y-4 overflow-y-auto lg:h-4/5">
+        {messages?.map((message, index) => (
+          <MessageItem key={message?.id || index} message={message} />
         ))}
       </div>
 
-      <div className="basis-1/5 border-t p-4 flex gap-2">
+      <div className=" border-t p-4 flex gap-2 h-fit sticky">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
