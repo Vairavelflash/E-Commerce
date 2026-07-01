@@ -4,8 +4,8 @@ export default function ProductCard({ product }) {
   return (
     <div className="border rounded-lg shadow-sm hover:shadow-md transition p-4 bg-white">
       <img
-        src={product.imageUrl}
-        alt={product.name}
+        src={product?.imageUrl || "https://placehold.co/200x200?text=No_Image"}
+        alt={product?.name || "alt_name"}
         className="w-full h-52 object-cover rounded-md"
       />
 

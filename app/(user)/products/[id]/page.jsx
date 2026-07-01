@@ -55,8 +55,8 @@ export default function ProductDetails() {
   return (
     <div className="grid md:grid-cols-2 gap-12">
       <img
-        src={product?.imageUrl}
-        alt={product?.name}
+        src={product?.imageUrl || "https://placehold.co/200x200?text=No_Image"}
+        alt={product?.name || "alt_name"}
         className="w-full h-1/2 rounded-xl"
       />
 
