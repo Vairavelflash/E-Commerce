@@ -55,16 +55,16 @@ export default function Navbar() {
           <Link href="orders" className="text-sm font-medium">
             Orders
           </Link>
-          {userInfo?.role === "ADMIN" && (
+          {/* {userInfo?.role === "ADMIN" && ( */}
             <Link href="aichat" className="text-sm font-medium">
               AI
             </Link>
-          )}
-          {userInfo?.role === "ADMIN" && (
+          {/* )} */}
+          {/* {userInfo?.role === "ADMIN" && ( */}
             <Link href="aiagent" className="text-sm font-medium">
               AI Agent
             </Link>
-          )}
+          {/* )} */}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
