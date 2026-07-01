@@ -42,7 +42,7 @@ function page() {
         role: localStorage.getItem("role"),
       };
       const response = await fetch(
-        "http://localhost:5000/api/v1/aiAgent/query",
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/aiAgent/query`,
         {
           method: "POST",
           headers: {

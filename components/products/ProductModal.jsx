@@ -58,8 +58,6 @@ export default function ProductModal({
         categoryId: "",
       });
     }
-
-
   }, [product, reset]);
 
   const createMutation = useMutation({
@@ -155,7 +153,7 @@ export default function ProductModal({
     if (!imageKey) return;
 
     try {
-      await axios.delete("http://localhost:5000/api/v1/uploads", {
+      await api.delete("/uploads", {
         data: {
           key: imageKey,
         },

@@ -46,7 +46,7 @@ export default function ChatPage() {
         userId: localStorage.getItem("userId"),
         role: localStorage.getItem("role"),
       };
-      const response = await fetch("http://localhost:5000/api/v1/ai/chat", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

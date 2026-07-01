@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import api from "./lib/api";
 
 const protectedRoutes = ["/admin/dashboard"];
 const authRoutes = ["/login", "/signup"];
 
-export function middleware(request) {
+export  function middleware(request) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("accessToken")?.value;
@@ -14,17 +15,18 @@ export function middleware(request) {
   );
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  if (isProtected && !token) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
 
-  if (isAuthRoute && token && role !=="ADMIN") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
+  // if (isProtected && !token) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
-  if (isAuthRoute && token && role =="ADMIN") {
-    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
-  }
+  // if (isAuthRoute && token && role !=="ADMIN") {
+  //   return NextResponse.redirect(new URL("/dashboard", request.url));
+  // }
+
+  // if (isAuthRoute && token && role =="ADMIN") {
+  //   return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+  // }
 
   return NextResponse.next();
 }
