@@ -28,13 +28,12 @@ export default function LoginPage() {
     },
     onSuccess: async () => {
       const authMe = await api.get("/auth/me");
-
       if (authMe.data?.data.role === "ADMIN") {
         router.push("/admin/dashboard");
       } else {
         router.push("/dashboard");
       }
-      router.refresh();
+      // router.refresh();
     },
   });
 

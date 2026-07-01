@@ -1,4 +1,6 @@
-export default function DashboardPage() {
+import React from "react";
+
+ function page() {
   return (
     <div className="p-10">
       <h1 className="text-3xl font-bold">
@@ -7,3 +9,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+export default page
